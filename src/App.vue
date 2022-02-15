@@ -6,10 +6,10 @@ import { onMounted, watchEffect } from "@vue/runtime-core";
 import _ from "lodash";
 
 const input = ref(null);
-const value = ref('Delete me!');
+const value = ref("Delete me!");
 
 const autoSave = _.debounce(() => {
-  input.value.setSelectionRange(0, input.value.value.length)
+  input.value.setSelectionRange(0, input.value.value.length);
   console.log("Saved");
 }, 2000);
 
@@ -19,7 +19,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <h1 class="text-2xl font-bold mb-8">My Input with Validation</h1>
+  <h1 class="text-2xl font-bold mb-8 text-gray-800">
+    The Input with Validation
+  </h1>
 
   <input
     placeholder="Type something here..."
@@ -27,9 +29,15 @@ onMounted(() => {
     ref="input"
     v-model="value"
     @input="autoSave"
-    class="border-b-2 border-blue-500 p-2"
+    class="border p-2 outline-none focus:ring rounded"
+    :class="[
+      { 'border-red-500 ring-red-200': !value },
+      { 'border-blue-500 ring-blue-200': value },
+    ]"
   />
-  <div v-if="!value" class="text-red-500 mt-3 text-sm">Please fill the empty field!</div>
+  <div v-if="!value" class="text-red-500 mt-3 text-sm">
+    Please fill the empty field!
+  </div>
 </template>
 
 
@@ -40,7 +48,6 @@ onMounted(() => {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: darkslategray;
   margin-top: 60px;
 }
 </style>
