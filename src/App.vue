@@ -31,8 +31,7 @@ onMounted(() => {
     @input="autoSave"
     class="border p-2 outline-none focus:ring rounded"
     :class="[
-      { 'border-red-500 ring-red-200': !value },
-      { 'border-blue-500 ring-blue-200': value },
+      !value ? 'border-red-500 ring-red-200' : 'border-blue-500 ring-blue-200',
     ]"
   />
   <div v-if="!value" class="text-red-500 mt-3 text-sm">
