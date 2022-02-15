@@ -22,18 +22,21 @@ onMounted(() => {
   <h1 class="text-2xl font-bold mb-4 text-gray-800">
     The Input with Validation
   </h1>
+    <input
+      placeholder="Type something here..."
+      type="text"
+      ref="input"
+      v-model.trim="value"
+      @input="autoSave"
+      class="border p-2 outline-none focus:ring rounded"
+      :class="[
+        !value
+          ? 'border-red-500 ring-red-200'
+          : 'border-blue-500 ring-blue-200',
+      ]"
+      title="Input field with validation"
+    />
 
-  <input
-    placeholder="Type something here..."
-    type="text"
-    ref="input"
-    v-model="value"
-    @input="autoSave"
-    class="border p-2 outline-none focus:ring rounded"
-    :class="[
-      !value ? 'border-red-500 ring-red-200' : 'border-blue-500 ring-blue-200',
-    ]"
-  />
   <div v-if="!value" class="text-red-500 mt-3 text-sm">
     Please fill the empty field!
   </div>
