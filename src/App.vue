@@ -19,7 +19,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <h1 class="text-2xl font-bold mb-8 text-gray-800">
+  <h1 class="text-2xl font-bold mb-4 text-gray-800">
     The Input with Validation
   </h1>
 
@@ -46,7 +46,7 @@ onMounted(() => {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   margin-top: 60px;
+  padding: 0 20px;
 }
 </style>
