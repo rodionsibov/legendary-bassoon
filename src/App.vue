@@ -1,7 +1,7 @@
 <script setup>
 // This starter template is using Vue 3 <script setup> SFCs
 
-import { ref, reactive } from "@vue/reactivity";
+import { ref, reactive, computed } from "@vue/reactivity";
 import { onMounted, watchEffect, watch } from "@vue/runtime-core";
 import _ from "lodash";
 
@@ -25,16 +25,21 @@ const inputs = reactive([
 const itemRefs = ref([]);
 
 const autoSave = _.debounce((i) => {
-  const el = itemRefs.value[i]
+  if (
+    !inputs[i].value ||
+    (inputs[i].value.length > 4 && inputs[i].value.length < 8)
+  )
+    return;
+
+  const el = itemRefs.value[i];
   // el.setSelectionRange(0, el.value.length);
-  el.select()
-  console.log(el)
-  console.log("Saved");
+  el.select();
+  console.log(el.value, "Updated!");
 }, 2000);
 
 onMounted(() => {
   console.log(itemRefs.value);
-  itemRefs.value[1].focus()
+  itemRefs.value[1].focus();
 });
 </script>
 
@@ -56,9 +61,9 @@ onMounted(() => {
             : 'border-blue-500 ring-blue-200',
         ]"
         :title="input.placeholder"
-        @click="autoSave(i)"
+        @input="autoSave(i)"
       />
-      <div v-if="!input.value" class="text-red-500 mt-3 text-sm">
+      <div v-if="false" class="text-red-500 mt-3 text-sm">
         {{ input.error }}
       </div>
     </div>
