@@ -1,44 +1,67 @@
 <script setup>
 // This starter template is using Vue 3 <script setup> SFCs
 
-import { ref } from "@vue/reactivity";
-import { onMounted, watchEffect } from "@vue/runtime-core";
+import { ref, reactive } from "@vue/reactivity";
+import { onMounted, watchEffect, watch } from "@vue/runtime-core";
 import _ from "lodash";
 
-const input = ref(null);
-const value = ref("Delete me!");
+const inputs = reactive([
+  {
+    id: 1,
+    value: "Delete me!",
+    type: "text",
+    placeholder: "I am text type",
+    error: "Please fill the empty field!",
+  },
+  {
+    id: 2,
+    value: "12345",
+    type: "number",
+    placeholder: "I am number type",
+    error: "Please fill the empty field!",
+  },
+]);
 
-const autoSave = _.debounce(() => {
-  input.value.setSelectionRange(0, input.value.value.length);
+const itemRefs = ref([]);
+
+const autoSave = _.debounce((i) => {
+  const el = itemRefs.value[i]
+  // el.setSelectionRange(0, el.value.length);
+  el.select()
+  console.log(el)
   console.log("Saved");
 }, 2000);
 
 onMounted(() => {
-  input.value.focus();
+  console.log(itemRefs.value);
+  itemRefs.value[1].focus()
 });
 </script>
 
 <template>
-  <h1 class="text-2xl font-bold mb-4 text-gray-800">
+  <h1 class="text-2xl font-bold mb-6 text-gray-800">
     The Input with Validation
   </h1>
-    <input
-      placeholder="Type something here..."
-      type="text"
-      ref="input"
-      v-model.trim="value"
-      @input="autoSave"
-      class="border p-2 outline-none focus:ring rounded"
-      :class="[
-        !value
-          ? 'border-red-500 ring-red-200'
-          : 'border-blue-500 ring-blue-200',
-      ]"
-      title="Input field with validation"
-    />
-
-  <div v-if="!value" class="text-red-500 mt-3 text-sm">
-    Please fill the empty field!
+  <div class="flex flex-col gap-4 md:w-1/2">
+    <div v-for="(input, i) in inputs" :key="input.id">
+      <input
+        :ref="(el) => (itemRefs[i] = el)"
+        :placeholder="input.placeholder"
+        :type="input.type"
+        v-model.trim="input.value"
+        class="border p-2 outline-none focus:ring rounded"
+        :class="[
+          !input.value
+            ? 'border-red-500 ring-red-200'
+            : 'border-blue-500 ring-blue-200',
+        ]"
+        :title="input.placeholder"
+        @click="autoSave(i)"
+      />
+      <div v-if="!input.value" class="text-red-500 mt-3 text-sm">
+        {{ input.error }}
+      </div>
+    </div>
   </div>
 </template>
 
