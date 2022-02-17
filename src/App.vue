@@ -35,8 +35,8 @@ const saveInput = (inputValue) => {
 const checkForm = _.debounce((inputValue, i) => {
   if (inputValue && inputValue !== tempInputValue.join("")) {
     // inputs[i].message = `Input ${i + 1} Success updated`;
-    inputs[i].error = ''
-    console.log(`Input ${i + 1} Success updated`)
+    inputs[i].error = "";
+    console.log(`Data << ${inputValue} >> Success updated`);
     return true;
   }
 
