@@ -23,22 +23,17 @@ const inputs = reactive([
 ]);
 
 const itemRefs = ref([]);
-let tempInputValue = []
+let tempInputValue = [];
 
 const saveInput = (inputValue) => {
-  tempInputValue = []
-  tempInputValue.push(inputValue)
-  console.log(tempInputValue.toString())
-}
-
-
+  tempInputValue = [];
+  tempInputValue.push(inputValue);
+  console.log(tempInputValue.toString());
+};
 
 const isValid = _.debounce((inputValue, i) => {
-  if (
-    !inputs[i].value && !inputs[i].value == tempInputValue.join('')
-    
-  )
-    return false;
+  if (inputValue == tempInputValue.join("")) return;
+  if (!inputs[i].value) return false;
 
   const el = itemRefs.value[i];
   // el.setSelectionRange(0, el.value.length);
