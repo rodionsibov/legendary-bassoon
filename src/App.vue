@@ -33,13 +33,17 @@ const saveInput = (inputValue) => {
 };
 
 const checkForm = _.debounce((inputValue, i) => {
-  if (inputValue === tempInputValue.join("")) {
-    return
+  if (inputValue && inputValue !== tempInputValue.join("")) {
+    // inputs[i].message = `Input ${i + 1} Success updated`;
+    inputs[i].error = ''
+    console.log(`Input ${i + 1} Success updated`)
+    return true;
   }
 
   if (!inputs[i].value && inputs[i].type === "text") {
     inputs[i].error = "Name required";
   }
+
   if (!inputs[i].value && inputs[i].type === "number") {
     inputs[i].error = "Age required";
   }
@@ -47,10 +51,7 @@ const checkForm = _.debounce((inputValue, i) => {
   // const el = itemRefs.value[i];
   // el.setSelectionRange(0, el.value.length);
   // el.select();
-  inputs[i].message = 'Success Updated'
-
-  return true
-}, 2000);
+}, 1000);
 
 onMounted(() => {
   itemRefs.value[1].focus();
@@ -80,6 +81,9 @@ onMounted(() => {
       />
       <div v-if="input.error" class="text-red-500 mt-3 text-sm">
         {{ input.error }}
+      </div>
+      <div v-if="input.message" class="text-green-500 mt-3 text-sm">
+        {{ input.message }}
       </div>
     </div>
   </div>
