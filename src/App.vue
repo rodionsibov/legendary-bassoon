@@ -11,29 +11,38 @@ const inputs = reactive([
     value: "Delete me!",
     type: "text",
     placeholder: "I am text type",
-    error: "Please fill the empty field!",
+    error: "Name required",
   },
   {
     id: 2,
     value: "12345",
     type: "number",
     placeholder: "I am number type",
-    error: "Please fill the empty field!",
+    error: "Age required",
   },
 ]);
 
 const itemRefs = ref([]);
+let tempInputValue = []
 
-const autoSave = _.debounce((i) => {
+const saveInput = (inputValue) => {
+  tempInputValue = []
+  tempInputValue.push(inputValue)
+  console.log(tempInputValue.toString())
+}
+
+
+
+const isValid = _.debounce((inputValue, i) => {
   if (
-    !inputs[i].value ||
-    (inputs[i].value.length > 4 && inputs[i].value.length < 8)
+    !inputs[i].value && !inputs[i].value == tempInputValue.join('')
+    
   )
-    return;
+    return false;
 
   const el = itemRefs.value[i];
   // el.setSelectionRange(0, el.value.length);
-  el.select();
+  // el.select();
   console.log(el.value, "Updated!");
 }, 2000);
 
@@ -61,9 +70,10 @@ onMounted(() => {
             : 'border-blue-500 ring-blue-200',
         ]"
         :title="input.placeholder"
-        @input="autoSave(i)"
+        @input="isValid(input.value, i)"
+        @click="saveInput(input.value)"
       />
-      <div v-if="false" class="text-red-500 mt-3 text-sm">
+      <div v-if="isValid" class="text-red-500 mt-3 text-sm">
         {{ input.error }}
       </div>
     </div>
