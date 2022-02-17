@@ -11,14 +11,16 @@ const inputs = reactive([
     value: "Delete me!",
     type: "text",
     placeholder: "I am text type",
-    error: "Name required",
+    error: "",
+    message: "",
   },
   {
     id: 2,
     value: "12345",
     type: "number",
     placeholder: "I am number type",
-    error: "Age required",
+    error: "",
+    message: "",
   },
 ]);
 
@@ -28,21 +30,29 @@ let tempInputValue = [];
 const saveInput = (inputValue) => {
   tempInputValue = [];
   tempInputValue.push(inputValue);
-  console.log(tempInputValue.toString());
 };
 
-const isValid = _.debounce((inputValue, i) => {
-  if (inputValue == tempInputValue.join("")) return;
-  if (!inputs[i].value) return false;
+const checkForm = _.debounce((inputValue, i) => {
+  if (inputValue === tempInputValue.join("")) {
+    return
+  }
 
-  const el = itemRefs.value[i];
+  if (!inputs[i].value && inputs[i].type === "text") {
+    inputs[i].error = "Name required";
+  }
+  if (!inputs[i].value && inputs[i].type === "number") {
+    inputs[i].error = "Age required";
+  }
+
+  // const el = itemRefs.value[i];
   // el.setSelectionRange(0, el.value.length);
   // el.select();
-  console.log(el.value, "Updated!");
+  inputs[i].message = 'Success Updated'
+
+  return true
 }, 2000);
 
 onMounted(() => {
-  console.log(itemRefs.value);
   itemRefs.value[1].focus();
 });
 </script>
@@ -65,10 +75,10 @@ onMounted(() => {
             : 'border-blue-500 ring-blue-200',
         ]"
         :title="input.placeholder"
-        @input="isValid(input.value, i)"
+        @input="checkForm(input.value, i)"
         @click="saveInput(input.value)"
       />
-      <div v-if="isValid" class="text-red-500 mt-3 text-sm">
+      <div v-if="input.error" class="text-red-500 mt-3 text-sm">
         {{ input.error }}
       </div>
     </div>
