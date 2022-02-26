@@ -31,7 +31,6 @@ let tempInputValue = [];
 const saveInput = (inputValue) => {
   tempInputValue = [];
   tempInputValue.push(inputValue);
-  console.log(tempInputValue);
 };
 
 const checkForm = _.debounce((inputValue, i) => {
@@ -40,7 +39,6 @@ const checkForm = _.debounce((inputValue, i) => {
     inputs[i].error = "";
     messages.value.push(inputValue);
 
-    console.log(messages.value);
     itemRefs.value[i].blur();
     return true;
   }
@@ -62,17 +60,19 @@ onMounted(() => {
   itemRefs.value[1].focus();
 });
 
+
 const closeMessage = (message) => {
   messages.value = messages.value.filter((el) => el !== message);
 };
 </script>
 
 <template>
-  <h1 class="text-2xl font-bold mb-6 text-gray-800">
-    The Input with Validation
+  <h1 class="text-4xl mb-6 text-gray-800 md:pr-72 text-center">
+    The Input
+    <span class="font-extrabold">with Validation</span>
   </h1>
   <div class="flex flex-col gap-4 md:w-1/2">
-    <div v-for="(input, i) in inputs" :key="input.id">
+    <div v-for="(input, i) in inputs" :key="input.id" class="mx-auto">
       <input
         :ref="(el) => (itemRefs[i] = el)"
         :placeholder="input.placeholder"
@@ -88,26 +88,14 @@ const closeMessage = (message) => {
         @input="checkForm(input.value, i)"
         @focus="saveInput(input.value)"
       />
-      <div v-if="input.error" class="text-red-500 mt-3 text-sm">
-        {{ input.error }}
-      </div>
+      <div v-if="input.error" class="text-red-500 mt-3 text-sm">{{ input.error }}</div>
     </div>
-    <div class="flex flex-col gap-2 absolute right-0 top-2 w-1/3">
+    <div class="flex flex-col gap-2 absolute right-0 bottom-2 md:top-2 md:w-1/3 w-11/12">
       <div
         v-for="message in messages"
         :key="message"
         @click="closeMessage(message)"
-        :class="[{ hidden: !messages }]"
-        class="
-          text-xs
-          bg-green-200
-          text-green-800
-          p-3
-          border-l-4 border-green-800
-          cursor-pointer
-          hover:bg-green-300
-          break-all
-        "
+        class="text-xs bg-green-200 p-3 border-l-4 border-green-800 cursor-pointer hover:bg-green-300 break-all"
       >
         <strong>{{ message }}</strong> Success updated
       </div>
