@@ -39,9 +39,6 @@ const checkForm = _.debounce((inputValue, i) => {
     // inputs[i].message = `Input ${i + 1} Success updated`;
     inputs[i].error = "";
     messages.value.push(inputValue);
-    setTimeout(() => {
-      messages.value = [];
-    }, 20000);
 
     console.log(messages.value);
     itemRefs.value[i].blur();
@@ -109,6 +106,7 @@ const closeMessage = (message) => {
           border-l-4 border-green-800
           cursor-pointer
           hover:bg-green-300
+          break-all
         "
       >
         <strong>{{ message }}</strong> Success updated
