@@ -37,7 +37,7 @@ const checkForm = _.debounce((inputValue, i) => {
   if (inputValue && inputValue !== tempInputValue.join("")) {
     // inputs[i].message = `Input ${i + 1} Success updated`;
     inputs[i].error = "";
-    messages.value.push(inputValue);
+    messages.value.unshift(inputValue);
 
     itemRefs.value[i].blur();
     return true;
