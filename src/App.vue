@@ -44,7 +44,7 @@ const checkForm = _.debounce((inputValue, i) => {
   if (inputValue && inputValue !== tempInputValue.join("")) {
     // inputs[i].message = `Input ${i + 1} Success updated`;
     inputs[i].error = "";
-    messages.value.unshift({ body: inputValue });
+    messages.value.unshift({ type: "Input" });
 
     itemRefs.value[i].blur();
     return true;
@@ -89,11 +89,11 @@ const closeMessage = (message) => {
 </script>
 
 <template>
-  <h1 class="text-4xl mt-48 mb-10 text-gray-800 text-center">
+  <h1 class="text-4xl mt-48 mb-10 text-gray-800">
     The Input
     <span class="font-extrabold">with Validation</span>
   </h1>
-  <div class="flex flex-col gap-4 md:w-1/2 mx-auto">
+  <div class="flex flex-col gap-4 md:w-1/2">
     <div v-for="(input, i) in inputs" :key="input.id">
       <input
         :ref="(el) => (itemRefs[i] = el)"
@@ -129,17 +129,7 @@ const closeMessage = (message) => {
     <div v-if="!isValid" class="text-red-500 text-sm mb-10">
       Field is required!
     </div>
-    <div
-      class="
-        flex flex-col
-        gap-2
-        absolute
-        right-0
-        bottom-2
-        md:top-2 md:w-1/3
-        w-11/12
-      "
-    >
+    <div class="flex flex-col gap-2 absolute right-0 top-2 md:w-1/3 w-1/2">
       <div
         v-for="(message, i) in messages"
         :key="i"
@@ -148,13 +138,15 @@ const closeMessage = (message) => {
           text-xs
           bg-green-200
           p-3
-          border-l-4 border-green-800
+          rounded-l-md
           cursor-pointer
           hover:bg-green-300
           break-all
+          shadow-md
         "
       >
-        <strong>{{ message.type }} {{ message.body }}</strong> Success updated
+        <strong>{{ message.type }}:</strong>
+        Success updated
       </div>
     </div>
   </div>
@@ -169,10 +161,6 @@ const closeMessage = (message) => {
   -moz-osx-font-smoothing: grayscale;
   margin-top: 60px;
   padding: 0 20px;
-}
-
-body {
-  @apply bg-slate-50;
 }
 
 ::placeholder {
