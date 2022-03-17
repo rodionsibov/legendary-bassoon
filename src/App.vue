@@ -21,6 +21,13 @@ const inputs = reactive([
     placeholder: "I am number type",
     error: "",
   },
+  {
+    id: 3,
+    value: "Delete me!",
+    type: "text",
+    placeholder: "I am text type",
+    error: "",
+  },
 ]);
 
 const messages = ref([]);
@@ -56,10 +63,13 @@ const checkForm = _.debounce((inputValue, i) => {
   // el.select();
 }, 1000);
 
-onMounted(() => {
-  itemRefs.value[1].focus();
-});
 
+// directives
+const vFocus = {
+  mounted: (el) => {
+    el.focus();
+  },
+};
 
 const closeMessage = (message) => {
   messages.value = messages.value.filter((el) => el !== message);
@@ -74,6 +84,7 @@ const closeMessage = (message) => {
   <div class="flex flex-col gap-4 md:w-1/2">
     <div v-for="(input, i) in inputs" :key="input.id" class="mx-auto">
       <input
+        v-focus
         :ref="(el) => (itemRefs[i] = el)"
         :placeholder="input.placeholder"
         :type="input.type"
@@ -88,14 +99,34 @@ const closeMessage = (message) => {
         @input="checkForm(input.value, i)"
         @focus="saveInput(input.value)"
       />
-      <div v-if="input.error" class="text-red-500 mt-3 text-sm">{{ input.error }}</div>
+      <div v-if="input.error" class="text-red-500 mt-3 text-sm">
+        {{ input.error }}
+      </div>
     </div>
-    <div class="flex flex-col gap-2 absolute right-0 bottom-2 md:top-2 md:w-1/3 w-11/12">
+    <div
+      class="
+        flex flex-col
+        gap-2
+        absolute
+        right-0
+        bottom-2
+        md:top-2 md:w-1/3
+        w-11/12
+      "
+    >
       <div
         v-for="message in messages"
         :key="message"
         @click="closeMessage(message)"
-        class="text-xs bg-green-200 p-3 border-l-4 border-green-800 cursor-pointer hover:bg-green-300 break-all"
+        class="
+          text-xs
+          bg-green-200
+          p-3
+          border-l-4 border-green-800
+          cursor-pointer
+          hover:bg-green-300
+          break-all
+        "
       >
         <strong>{{ message }}</strong> Success updated
       </div>
