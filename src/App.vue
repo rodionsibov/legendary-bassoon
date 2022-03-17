@@ -23,7 +23,7 @@ const inputs = reactive([
   },
   {
     id: 3,
-    value: "Delete me!",
+    value: "Change me!",
     type: "text",
     placeholder: "I am text type",
     error: "",
@@ -72,7 +72,7 @@ const vAutofocus = {
 
 const textareaValue = ref("");
 const isValid = computed(() => {
-  return textareaValue.value !== "";
+  return !!textareaValue.value
 });
 
 const postTextareaValue = _.debounce((value) => {
@@ -86,7 +86,7 @@ const closeMessage = (message) => {
 </script>
 
 <template>
-  <h1 class="text-4xl my-10 text-gray-800 text-center">
+  <h1 class="text-4xl mt-48 mb-10 text-gray-800 text-center">
     The Input
     <span class="font-extrabold">with Validation</span>
   </h1>
@@ -166,6 +166,10 @@ const closeMessage = (message) => {
   -moz-osx-font-smoothing: grayscale;
   margin-top: 60px;
   padding: 0 20px;
+}
+
+body {
+  @apply bg-slate-50;
 }
 
 ::placeholder {
