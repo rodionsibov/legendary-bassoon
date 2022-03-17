@@ -86,18 +86,18 @@ const closeMessage = (message) => {
 </script>
 
 <template>
-  <h1 class="text-4xl mb-6 text-gray-800 md:pr-72 text-center">
+  <h1 class="text-4xl my-10 text-gray-800 text-center">
     The Input
     <span class="font-extrabold">with Validation</span>
   </h1>
-  <div class="flex flex-col gap-4 md:w-1/2">
+  <div class="flex flex-col gap-4 md:w-1/2 mx-auto">
     <div v-for="(input, i) in inputs" :key="input.id">
       <input
         :ref="(el) => (itemRefs[i] = el)"
         :placeholder="input.placeholder"
         :type="input.type"
         v-model.trim="input.value"
-        class="border p-2 outline-none focus:ring rounded"
+        class="border p-2 outline-none focus:ring rounded w-full"
         :class="[
           !input.value
             ? 'border-red-500 ring-red-200'
