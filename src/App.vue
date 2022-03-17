@@ -75,6 +75,11 @@ const isValid = computed(() => {
   return textareaValue.value !== "";
 });
 
+const postTextareaValue = _.debounce((value) => {
+  console.log(value);
+  messages.value.unshift(value);
+}, 1000);
+
 const closeMessage = (message) => {
   messages.value = messages.value.filter((el) => el !== message);
 };
@@ -108,6 +113,7 @@ const closeMessage = (message) => {
     </div>
     <textarea
       v-model="textareaValue"
+      @input="postTextareaValue(textareaValue)"
       :class="[
         isValid
           ? 'border-blue-500 ring-blue-200'
@@ -118,7 +124,7 @@ const closeMessage = (message) => {
       v-autofocus
     ></textarea>
     <div v-if="!isValid" class="text-red-500 text-sm mb-10">
-      "Name required"
+      Field is required!
     </div>
     <div
       class="
