@@ -65,7 +65,7 @@ const checkForm = _.debounce((inputValue, i) => {
 
 
 // directives
-const vFocus = {
+const vAutofocus = {
   mounted: (el) => {
     el.focus();
   },
@@ -84,7 +84,6 @@ const closeMessage = (message) => {
   <div class="flex flex-col gap-4 md:w-1/2">
     <div v-for="(input, i) in inputs" :key="input.id" class="mx-auto">
       <input
-        v-focus
         :ref="(el) => (itemRefs[i] = el)"
         :placeholder="input.placeholder"
         :type="input.type"
@@ -103,6 +102,7 @@ const closeMessage = (message) => {
         {{ input.error }}
       </div>
     </div>
+    <textarea name="" id="" cols="30" rows="10" v-autofocus></textarea>
     <div
       class="
         flex flex-col
