@@ -63,13 +63,17 @@ const checkForm = _.debounce((inputValue, i) => {
   // el.select();
 }, 1000);
 
-
 // directives
 const vAutofocus = {
   mounted: (el) => {
     el.focus();
   },
 };
+
+const textareaValue = ref("");
+const isValid = computed(() => {
+  return textareaValue.value !== "";
+});
 
 const closeMessage = (message) => {
   messages.value = messages.value.filter((el) => el !== message);
@@ -82,7 +86,7 @@ const closeMessage = (message) => {
     <span class="font-extrabold">with Validation</span>
   </h1>
   <div class="flex flex-col gap-4 md:w-1/2">
-    <div v-for="(input, i) in inputs" :key="input.id" class="mx-auto">
+    <div v-for="(input, i) in inputs" :key="input.id">
       <input
         :ref="(el) => (itemRefs[i] = el)"
         :placeholder="input.placeholder"
@@ -102,7 +106,20 @@ const closeMessage = (message) => {
         {{ input.error }}
       </div>
     </div>
-    <textarea name="" id="" cols="30" rows="10" v-autofocus></textarea>
+    <textarea
+      v-model="textareaValue"
+      :class="[
+        isValid
+          ? 'border-blue-500 ring-blue-200'
+          : 'border-red-500 ring-red-200',
+      ]"
+      class="border p-2 outline-none focus:ring rounded"
+      placeholder="Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos, laboriosam?"
+      v-autofocus
+    ></textarea>
+    <div v-if="!isValid" class="text-red-500 text-sm mb-10">
+      "Name required"
+    </div>
     <div
       class="
         flex flex-col
@@ -143,5 +160,9 @@ const closeMessage = (message) => {
   -moz-osx-font-smoothing: grayscale;
   margin-top: 60px;
   padding: 0 20px;
+}
+
+::placeholder {
+  @apply text-sm;
 }
 </style>
