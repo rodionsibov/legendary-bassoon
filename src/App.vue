@@ -44,7 +44,7 @@ const checkForm = _.debounce((inputValue, i) => {
   if (inputValue && inputValue !== tempInputValue.join("")) {
     // inputs[i].message = `Input ${i + 1} Success updated`;
     inputs[i].error = "";
-    messages.value.unshift(inputValue);
+    messages.value.unshift({ body: inputValue });
 
     itemRefs.value[i].blur();
     return true;
@@ -72,16 +72,19 @@ const vAutofocus = {
 
 const textareaValue = ref("");
 const isValid = computed(() => {
-  return !!textareaValue.value
+  return !!textareaValue.value;
 });
 
 const postTextareaValue = _.debounce((value) => {
   console.log(value);
-  messages.value.unshift(value);
+  messages.value.unshift({
+    type: "Textarea",
+    body: value,
+  });
 }, 1000);
 
 const closeMessage = (message) => {
-  messages.value = messages.value.filter((el) => el !== message);
+  messages.value = messages.value.filter((el) => el.body !== message);
 };
 </script>
 
@@ -138,9 +141,9 @@ const closeMessage = (message) => {
       "
     >
       <div
-        v-for="message in messages"
-        :key="message"
-        @click="closeMessage(message)"
+        v-for="(message, i) in messages"
+        :key="i"
+        @click="closeMessage(message.body)"
         class="
           text-xs
           bg-green-200
@@ -151,7 +154,7 @@ const closeMessage = (message) => {
           break-all
         "
       >
-        <strong>{{ message }}</strong> Success updated
+        <strong>{{ message.type }} {{ message.body }}</strong> Success updated
       </div>
     </div>
   </div>
